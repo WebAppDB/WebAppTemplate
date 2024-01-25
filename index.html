@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="favicon.ico" />
+  <title>Template App for Web App DB</title>
+</head>
+<body>
+</body>
+<script type="module">
+  import { WebAppDBEngine } from "https://webappdb.github.io/WebAppDBEngine/modules/WebAppDBEngine.mjs"
+  import { getApp } from "./WebAppTemplate.mjs";
+
+  // Initializing with default Height so we see something
+  document.body.style.height = "100vh";
+
+  var gEngine = new WebAppDBEngine(document.body, getApp(), true);
+  gEngine.runEngine();
+
+</script>
+</html>
