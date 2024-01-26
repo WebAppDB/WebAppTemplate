@@ -1,5 +1,17 @@
 import { WebAppBaseClass } from "https://webappdb.github.io/WebAppDBEngine/api/v01/WebAppBaseClass.mjs"
 
+// Need to wrap url and have it resolve as a absolute path to the WebAppOrigin
+// Otherwise the resource used will be relative to WebAppDB origin
+function urlWrapper(iUrl) {
+  const RgExp = new RegExp("^(?:[a-z]+:)?//", "i");
+  if (RgExp.test(URL)) {
+      return iUrl;
+  }  
+  const moduleUrl = new URL(import.meta.url);
+  return new URL(iUrl, moduleUrl.origin).href;
+}
+
+// Inherit from WebAppBassClass to have all the required functions defined.
 class WebAppTemplate extends WebAppBaseClass {
 
   constructor() {
@@ -11,21 +23,32 @@ class WebAppTemplate extends WebAppBaseClass {
 
     iContainerDom.style.textAlign = "center";
     iContainerDom.style.display = "inline-grid";
-    iContainerDom.style.gridTemplateColumns = "50% 50%";
-    iContainerDom.style.gridTemplateRows = "50% 50%";
+    iContainerDom.style.gridTemplateColumns = "33% 33% auto";
+    iContainerDom.style.gridTemplateRows = "33% 33% auto";
 
-    const iconImage = new Image();
-    iconImage.src = "./favicon.ico";
-    iconImage.style.width = "75vw"
+    var wSize = "200px";
     
-    iconImage.style.gridColumn = 2;
-    iconImage.style.gridRow = 2;
-    iconImage.style.position = "relative";
-    iconImage.style.top = "calc( -75vw / 2 )";
-    iconImage.style.left = "calc( -75vw / 2 )";
+    const wIconImage1 = new Image();
+    wIconImage1.src = "./favicon.ico"; // Bad Path
 
-    
-    iContainerDom.appendChild(iconImage);
+    const wIconImage2 = new Image();
+    wIconImage2.src = urlWrapper("./favicon.ico"); // User urlWrapper to use relative paths
+
+    var setupImage = (iImage, iParent, iIndex) => {
+
+      iImage.style.width = wSize;
+      iImage.style.gridColumn = iIndex;
+      iImage.style.gridRow = iIndex;
+      iImage.style.position = "relative";
+      iImage.style.top = "calc( -" + wSize  + " / 2 )";
+      iImage.style.left = "calc( -" + wSize + " / 2 )";
+  
+      iParent.appendChild(iImage);
+    }
+
+    setupImage(wIconImage1, iContainerDom, 2);
+    setupImage(wIconImage2, iContainerDom, 3);
+
   }
 
   destroy(iContainerDom) {
@@ -48,6 +71,7 @@ class WebAppTemplate extends WebAppBaseClass {
 
 }
 
+// This function is required for WebAppDB Engine to be able to create the WebApp
 export function getApp() {
   return new WebAppTemplate();
 }
