@@ -1,7 +1,7 @@
 import { WebAppBaseClass } from "https://webappdb.github.io/WebAppDBEngine/api/v01/WebAppBaseClass.mjs"
 
-// Need to wrap url and have it resolve as a absolute path to the WebAppOrigin
-// Otherwise the resource used will be relative to WebAppDB origin
+// Need to wrap url and have it resolve as path to the WebApp.mjs
+// Otherwise the resource used will be relative to WebAppDB.github.io
 function urlWrapper(iUrl) {
   const RgExp = new RegExp("^(?:[a-z]+:)?//", "i");
   if (RgExp.test(URL)) {
@@ -10,7 +10,6 @@ function urlWrapper(iUrl) {
   const moduleUrl = new URL(import.meta.url);
   const moduleDir = moduleUrl.pathname.split("/").slice(0,-1).join("/");
   return new URL( moduleDir + "/" + iUrl, moduleUrl.origin).href;
-
 }
 
 // Inherit from WebAppBassClass to have all the required functions defined.
