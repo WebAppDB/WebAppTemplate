@@ -8,7 +8,9 @@ function urlWrapper(iUrl) {
       return iUrl;
   }  
   const moduleUrl = new URL(import.meta.url);
-  return new URL(iUrl, moduleUrl.origin).href;
+  const moduleDir = moduleUrl.pathname.split("/").slice(0,-1).join("/");
+  return new URL( moduleDir + "/" + iUrl, moduleUrl.origin).href;
+
 }
 
 // Inherit from WebAppBassClass to have all the required functions defined.
